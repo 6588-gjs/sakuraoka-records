@@ -39,6 +39,12 @@ on:
     paths:
       - 'android/**'
       - '.github/workflows/android.yml'
+      # H5 站点文件更新时也重新构建 APK（APK 内嵌了 H5 资源）
+      - 'index.html'
+      - 'privacy.html'
+      - 'css/**'
+      - 'js/**'
+      - 'assets/**'
 
 # 打 tag 时要把 APK 附加到 Release，需要写 contents 权限
 permissions:

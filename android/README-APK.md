@@ -10,13 +10,13 @@
 
 ---
 
-## 1. 产物信息（必须与商店/软著材料一致）
+## 1. 产物信息（名称/版本必须与 H5 及商店信息一致；若后续补办软著，也应与之一致）
 
 | 项 | 值 | 说明 |
 |---|---|---|
-| 应用名 | 旧樱丘高中记录室残存档案 | 与 TapTap 标题、软著核心名称一致 |
+| 应用名 | 旧樱丘高中记录室残存档案 | 与 TapTap 标题一致（若补办软著，全称建议“旧樱丘高中记录室残存档案游戏软件”） |
 | 包名 applicationId | `com.sakuraoka.records` | 首次上架后**永远不能改**（否则算新游戏、无法覆盖更新） |
-| versionName | `1.1.0` | 与 H5 版本 V1.1.0 / 软著 V1.1 对齐 |
+| versionName | `1.1.0` | 与 H5 版本 V1.1.0 对齐 |
 | versionCode | `11` | **每次发版必须 +1**（TapTap 用它判断升级） |
 | minSdk | 23（Android 6.0） | 覆盖绝大多数在用安卓机 |
 | targetSdk | 34（Android 14） | AGP 8.4 / compileSdk 34 |
@@ -233,7 +233,7 @@ cd sakuraoka\android
 
 1. **versionCode 必须单调递增**（当前 11）。建议规则：
    - `1.1.0` → 11，`1.1.1` → 12，`1.2.0` → 20，`2.0.0` → 200（简单可读即可，TapTap 只比较大小）。
-2. **versionName** 与 H5 页面/软著材料的版本号保持一致（V1.1 → `1.1.0`）。
+2. **versionName** 与 H5 页面版本号保持一致（V1.1 → `1.1.0`）；若后续补办软著/备案，版本号也应与之一致。
 3. 改版本号两种方式（任选）：
    - 直接改 `app/build.gradle` 里默认值：`versionCode 12` / `versionName '1.1.1'`；
    - 不改代码，CI 手动触发时在 `version_code` / `version_name` 输入框填写（等价于 `-PappVersionCode=12 -PappVersionName=1.1.1`）。
@@ -247,6 +247,9 @@ cd sakuraoka\android
 `app/build.gradle` 里的 `copyWebAssets`（Gradle `Sync` 任务）：
 
 - **来源** `webRoot`：默认 `${rootProject.projectDir}/..`（仓库根 = GitHub Pages 站点根）；可用 `-PwebRoot=<绝对/相对路径>` 覆盖；
+  - ⚠️ 本工作目录里（`sakuraoka/android/`）的"上一级"是 `sakuraoka/`，**不是站点根**，所以本地构建必须显式传
+    `-PwebRoot="..\pages"`；GitHub 仓库里"上一级"就是仓库根，CI 传 `-PwebRoot="$GITHUB_WORKSPACE"` 即可。
+  - 相对路径是相对 `android/` 目录解析的（例如 `-PwebRoot=..\pages` → `sakuraoka\pages`）；
 - **复制内容**：`index.html`、`privacy.html`、`manifest.webmanifest`、`favicon.*`、`css/**`、`js/**`、`assets/**`；
 - **排除**：`android/**`、`.git/**`、`.github/**`、`node_modules/**`、`README*`、`*.map` 等仓库/工程文件；
 - **目标**：`app/src/main/assets/www/`（该目录已被 `.gitignore` 忽略，是构建时生成的）；
@@ -294,25 +297,27 @@ node sakuraoka\android\check-webroot.mjs --web-root=sakuraoka\pages --copy
 
 ## 8. TapTap 上传注意事项（APK 路线）
 
-> 本节为工程侧要点；完整的上架/备案/软著流程见 `sakuraoka/docs/` 与 `softcopyright/` 材料，最终以 TapTap 开发者后台要求为准。
+> 本节为工程侧要点；完整的上架/备案流程见 `sakuraoka/docs/`，最终以 TapTap 开发者后台要求为准。
+> 软著材料不在本交付物内（用户当前决定不办软著，见第 8 节第 7 条）。
 
 1. **包名与后台一致**：TapTap 后台创建游戏时填的包名必须是 `com.sakuraoka.records`；上传 APK 后该包名绑定，不能改。
 2. **签名一致**：同一游戏后续更新必须用同一 keystore 签名；**首次正式上传前确认 Secrets 已配置**（CI 日志 Job Summary 会显示 `release keystore ✅`）。
-3. **名称一致**：应用名「旧樱丘高中记录室残存档案」与商店标题、软著名称（「旧樱丘高中记录室残存档案游戏软件」）保持核心名称一致；不一致可能被要求补充说明。
+3. **名称一致**：应用名「旧樱丘高中记录室残存档案」与商店标题保持核心名称一致；若后续补办软著，软著全称建议为「旧樱丘高中记录室残存档案游戏软件」，避免名称不一致被要求补充说明。
 4. **隐私政策 URL**：`https://6588-gjs.github.io/sakuraoka-records/privacy.html`（仓库 Pages 部署后有效）。
    - 本作**不收集任何个人信息、无联网、无第三方 SDK、无广告/内购**；存档仅存本机（WebView localStorage）。
    - APK 的 `privacy.html` 也已打进 `assets/www/privacy.html`，断网时可在游戏内"设置 → 隐私说明"查看。
 5. **权限说明**：APK 申请权限数为 **0**（连 INTERNET 都没有）。在 TapTap 后台的隐私/权限说明里如实填写"不申请任何权限"。
    - 若审核要求解释为何无网络权限：本作完全离线，全部资源内置于 APK。
-6. **防沉迷**：按 TapTap 后台要求处理（TapTap 提供 TapPlay / 防沉迷相关能力，具体以后台当前要求为准）。
-   注意：本工程刻意**未接入任何第三方 SDK**；如 TapTap 强制要求接入其防沉迷 SDK，需要按 SDK 文档另外集成并更新"无第三方 SDK"的表述。
-7. **资质**：APK 路线上架同样需要软著 + 游戏备案（与 H5 路线一致，见 `docs/`）；本工程只负责"能装、能玩、签名对"。
+6. **防沉迷**：按 TapTap 后台要求处理。TapTap 官方提供 TapPlay / 防沉迷能力，通常由 TapTap 侧（TapPlay 或后台配置）负责，
+   不需要在游戏内重复实现（最终以后台当前要求为准）。
+   注意：本工程刻意**未接入任何第三方 SDK**；如 TapTap 强制要求集成其防沉迷 SDK，需要按 SDK 文档另外集成，并同步更新"无第三方 SDK"的表述。
+7. **资质（重要）**：TapTap APK 正式上架同样需要软著资质；用户当前决定不办，因此 APK 定位为**开发测试/备用包**，正式上架前需补办软著或走其他通道。软著材料不在本交付物内。
 8. **审核规范提醒**（TapTap 审核规范 1.4.3「游戏不得为简单网站页面打包」、1.4.4「主要功能不得依赖第三方应用或跳转网页」）：
    - 本作是完整的三幕互动解谜游戏（证据系统、密码谜题、推理板、4 结局、存档/结局收集），**不是静态网站**；
    - WebView 只是运行容器，所有逻辑与资源都在包内，断网可完整通关；
    - 建议在 TapTap 详情页/审核备注里强调"完整单机解谜游戏 + 离线可玩 + 4 结局"，避免被误判为包装网站。
 9. **targetSdk**：34。TapTap 目前未强制 Google Play 式的 targetSdk 下限要求，但未来可能提高；升级时只需改 `compileSdk/targetSdk` 并验证（可能伴随 AGP 升级）。
-10. **上架材料**：APK 文件、应用名、图标、截图（≥3 张 720×1280 实机截图，见 `store-assets/`）、隐私政策 URL、软著/备案信息。
+10. **上架材料**：APK 文件、应用名、图标、截图（≥3 张 720×1280 实机截图，见 `store-assets/`）、隐私政策 URL、（正式上架所需）软著/备案信息——按第 7 条，当前未办理软著，故本包仅作开发测试/备用。
 
 ---
 

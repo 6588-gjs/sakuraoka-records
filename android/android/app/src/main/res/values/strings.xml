@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- 应用名称（桌面图标 / 应用信息里显示）= TapTap 商店标题 -->
-    <string name="app_name">旧樱丘高中记录室残存档案</string>
-
-    <!-- 少量运行期提示文案（正常游戏流程不会出现，仅异常兜底） -->
-    <string name="toast_no_browser">未找到可打开该链接的应用</string>
-</resources>
