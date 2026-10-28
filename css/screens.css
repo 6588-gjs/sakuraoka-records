@@ -770,6 +770,20 @@
   line-height: 1.8;
 }
 
+/* 可选 TapTap 登录状态（仅检测到 TapTap SDK 时出现） */
+.tap-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: #e7f5e8;
+  border: 1px solid #2f6a3a;
+  color: #1f4a29;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
 /* 提示 */
 .hint-act {
   display: inline-block;

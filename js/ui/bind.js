@@ -97,6 +97,21 @@
       if (on) audio().click();
       SK.core.router.render({ keepScroll: true });
     },
+    /* 可选 TapTap 登录：只在玩家主动点击时调用，失败不阻塞游戏 */
+    tapLogin: function () {
+      try {
+        if (SK.core.taptap) SK.core.taptap.login();
+      } catch (err) {
+        SK.ui.toast.show(SK.data.ui.toast.tapLoginFail);
+      }
+    },
+    tapLogout: function () {
+      try {
+        if (SK.core.taptap) SK.core.taptap.logout();
+      } catch (err) {
+        /* 忽略 */
+      }
+    },
     clearSave: function () {
       SK.core.state.clearSave();
       SK.core.state.reset();

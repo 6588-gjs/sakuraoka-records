@@ -138,6 +138,12 @@
     });
   }
 
+  /* 读取 opts.overlay（仅接受白名单内的弹窗类型） */
+  function overlayOpt(o) {
+    if (o && o.overlay && OVERLAY_KINDS.indexOf(o.overlay) >= 0) return o.overlay;
+    return null;
+  }
+
   /* ------------------------------------------------------------------------
    * 状态摘要
    * ---------------------------------------------------------------------- */
@@ -208,7 +214,13 @@
 
     /* 特殊画面 */
     if (page === 'title') {
-      state().patch({ screen: 'title', overlay: null, overlayReturn: null, ending: null, cutscene: null });
+      state().patch({
+        screen: 'title',
+        overlay: overlayOpt(o),
+        overlayReturn: null,
+        ending: null,
+        cutscene: null
+      });
       SK.core.router.render();
       return snapshot();
     }
@@ -216,7 +228,7 @@
       state().patch({
         screen: 'lang',
         tempLang: lang || state().getSettings().translation || 'both',
-        overlay: null,
+        overlay: overlayOpt(o),
         ending: null
       });
       SK.core.router.render();
@@ -226,7 +238,7 @@
       state().patch({
         started: true,
         screen: 'intro',
-        overlay: null,
+        overlay: overlayOpt(o),
         ending: null,
         cutscene: null,
         page: 'a1_home',
