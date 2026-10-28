@@ -1,0 +1,17 @@
+# 仓库根 .gitignore（GitHub Pages + Android CI）
+# 构建产物
+android/.gradle/
+android/build/
+android/app/build/
+android/app/src/main/assets/www/
+android/local.properties
+*.jks
+*.keystore
+keystore.properties
+
+# 系统/临时
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
+.npm-cache/
