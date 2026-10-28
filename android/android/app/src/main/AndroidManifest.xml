@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  旧樱丘高中记录室残存档案 —— Android 清单
+  ============================================================================
+  · 包名 com.sakuraoka.records / versionName 1.1.0 / versionCode 11
+  · 不申请任何权限：游戏 100% 离线，H5 资源全部打包在 assets/www/ 内
+  · 竖屏锁定、无 ActionBar、深色主题、禁用备份
+  ============================================================================
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+      刻意不声明任何 <uses-permission>，包括 INTERNET：
+      离线可玩是本作的硬性要求（也方便 TapTap 审核说明"无敏感权限"）。
+      WebView 加载 file:///android_asset/www/ 不需要网络权限。
+    -->
+
+    <application
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SakuraokaRecords"
+        android:usesCleartextTraffic="false"
+        android:enableOnBackInvokedCallback="false"
+        tools:targetApi="33">
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden|uiMode|density|fontScale"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.SakuraokaRecords"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

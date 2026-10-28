@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>copyWebAssets STUB</title>
+  <link rel="stylesheet" href="css/stub.css" />
+</head>
+<body>
+  <!--
+    仅用于验证 Gradle 的 copyWebAssets 资源复制任务（不参与正式构建）。
+    本地/CI 临时验证：
+      cd android && ./gradlew copyWebAssets -PwebRoot="$PWD/_stub-web"
+      ls app/src/main/assets/www
+    之后正常构建会由 -PwebRoot 指向真实 H5 站点根，Sync 会清掉这些 stub 文件。
+  -->
+  <h1>copyWebAssets STUB</h1>
+  <p>如果你在 APK 里看到这个页面，说明 webRoot 指到了 _stub-web，构建参数有误。</p>
+  <script src="js/stub.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+// ============================================================================
+// 根构建脚本：只需要 Android Gradle Plugin（AGP），无其他插件/依赖。
+// AGP 8.4.2 要求 Gradle >= 8.6、JDK 17（CI 用 temurin 17）。
+// ============================================================================
+
+plugins {
+    id 'com.android.application' version '8.4.2' apply false
+}
+
+// 顶层 clean：清掉根 build 目录（各模块自己的 build 目录由模块 clean 处理）
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
+}

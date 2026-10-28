@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- API 31+（Android 12）：系统启动画面 SplashScreen，统一深色背景，避免白屏 -->
+    <style name="Theme.SakuraokaRecords" parent="Theme.SakuraokaRecords.Base">
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <item name="android:windowSplashScreenBackground">@color/background_dark</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/background_dark</item>
+    </style>
+</resources>

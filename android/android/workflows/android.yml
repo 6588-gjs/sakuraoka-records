@@ -1,0 +1,257 @@
+name: Android APK
+
+# ============================================================================
+# 旧樱丘高中记录室残存档案 —— Android WebView 包装 APK 自动构建
+# ----------------------------------------------------------------------------
+# 触发方式：
+#   1) push 到 main（且改动包含 android/** 或本文件）—— 自动构建
+#   2) push tag（v*，例如 v1.1.0）—— 构建并附加 APK 到 GitHub Release
+#   3) 手动 workflow_dispatch —— 可在 Actions 页面点 Run workflow 触发
+# 产物：artifact `sakuraoka-records-apk`（app-release.apk）
+# 签名：仓库 Secrets 配置 KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS / KEY_PASSWORD
+#       未配置时退回 debug 签名（仅可测试，不可上架）；tag 构建强制要求正式签名。
+#
+# 文件位置说明：本文件最终应位于仓库 `.github/workflows/android.yml`，
+# 构建目录为仓库根目录下的 `android/`（Gradle 工程根）。
+# ============================================================================
+
+on:
+  workflow_dispatch:
+    inputs:
+      web_root:
+        description: 'H5 站点根目录（相对仓库根；默认 "."，即仓库根 = GitHub Pages 站点根）'
+        required: false
+        default: '.'
+      version_code:
+        description: '覆盖 versionCode（留空则用 android/app/build.gradle 里的默认值 11）'
+        required: false
+        default: ''
+      version_name:
+        description: '覆盖 versionName（留空则用 android/app/build.gradle 里的默认值 1.1.0）'
+        required: false
+        default: ''
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+    paths:
+      - 'android/**'
+      - '.github/workflows/android.yml'
+      # H5 站点文件更新时也重新构建 APK（APK 内嵌了 H5 资源）
+      - 'index.html'
+      - 'privacy.html'
+      - 'css/**'
+      - 'js/**'
+      - 'assets/**'
+
+# 打 tag 时要把 APK 附加到 Release，需要写 contents 权限
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GRADLE_OPTS: '-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true'
+
+jobs:
+  build:
+    name: Build signed release APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
+
+      - name: Show toolchain versions
+        run: |
+          set -euo pipefail
+          java -version
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          find "$ANDROID_HOME/platforms" -maxdepth 1 -mindepth 1 -type d -printf '  platform: %f\n' | sort || true
+          find "$ANDROID_HOME/build-tools" -maxdepth 1 -mindepth 1 -type d -printf '  build-tools: %f\n' | sort -V || true
+
+      - name: Locate H5 web root
+        id: webroot
+        run: |
+          set -euo pipefail
+          WEB_ROOT_REL="${{ github.event.inputs.web_root }}"
+          if [ -z "${WEB_ROOT_REL}" ]; then
+            WEB_ROOT_REL="."
+          fi
+          case "$WEB_ROOT_REL" in
+            /*) WEB_ROOT_ABS="$WEB_ROOT_REL" ;;
+            *)  WEB_ROOT_ABS="$GITHUB_WORKSPACE/$WEB_ROOT_REL" ;;
+          esac
+          if [ ! -d "$WEB_ROOT_ABS" ]; then
+            echo "::error::H5 站点目录不存在: $WEB_ROOT_ABS"
+            exit 1
+          fi
+          WEB_ROOT_ABS="$(cd "$WEB_ROOT_ABS" && pwd)"
+          echo "web_root=$WEB_ROOT_ABS" >> "$GITHUB_OUTPUT"
+          echo "H5 web root = $WEB_ROOT_ABS"
+          find "$WEB_ROOT_ABS" -maxdepth 1 -mindepth 1 -printf '  %f\n' | sort | head -n 40
+          if [ ! -f "$WEB_ROOT_ABS/index.html" ]; then
+            echo "::error::在 $WEB_ROOT_ABS 下找不到 index.html —— 仓库根应为 H5 站点根（含 index.html/css/js/assets）"
+            exit 1
+          fi
+
+      - name: Make gradlew executable
+        run: |
+          set -euo pipefail
+          chmod +x android/gradlew
+          # 防御：Windows 上提交时可能被转成 CRLF，Linux 下必须去掉 \r
+          sed -i 's/\r$//' android/gradlew
+          head -n 1 android/gradlew
+
+      - name: Restore release keystore (if secret configured)
+        id: keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
+          set -euo pipefail
+          if [ -z "${KEYSTORE_BASE64:-}" ]; then
+            echo "::warning title=No signing key::KEYSTORE_BASE64 secret 未配置，release 将使用 debug 签名（仅供内部测试，不可上架 TapTap / 不可覆盖更新）。配置方法见 android/README-APK.md。"
+            echo "has_keystore=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          MISSING=""
+          [ -n "${KEYSTORE_PASSWORD:-}" ] || MISSING="$MISSING KEYSTORE_PASSWORD"
+          [ -n "${KEY_ALIAS:-}" ] || MISSING="$MISSING KEY_ALIAS"
+          if [ -n "$MISSING" ]; then
+            echo "::error title=Missing secrets::KEYSTORE_BASE64 已配置，但缺少:$MISSING"
+            exit 1
+          fi
+          printf '%s' "$KEYSTORE_BASE64" | tr -d '\r\n ' | base64 -d > android/app/release.keystore
+          ls -l android/app/release.keystore
+          file android/app/release.keystore
+          echo "has_keystore=true" >> "$GITHUB_OUTPUT"
+
+      - name: Require signing key for tag builds
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          set -euo pipefail
+          if [ ! -f android/app/release.keystore ]; then
+            echo "::error::tag 构建必须使用正式签名。请先在仓库 Secrets 配置 KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS（参考 android/README-APK.md）。"
+            exit 1
+          fi
+
+      - name: Build release APK
+        working-directory: android
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          INPUT_VERSION_CODE: ${{ github.event.inputs.version_code }}
+          INPUT_VERSION_NAME: ${{ github.event.inputs.version_name }}
+        run: |
+          set -euo pipefail
+          # 用数组传参，避免 version 号里有空格/特殊字符时被 word splitting
+          GRADLE_ARGS=()
+          if [ -n "${INPUT_VERSION_CODE:-}" ]; then
+            GRADLE_ARGS+=("-PappVersionCode=${INPUT_VERSION_CODE}")
+          fi
+          if [ -n "${INPUT_VERSION_NAME:-}" ]; then
+            GRADLE_ARGS+=("-PappVersionName=${INPUT_VERSION_NAME}")
+          fi
+          echo "gradle args: ${GRADLE_ARGS[*]:-<none>}"
+          ./gradlew assembleRelease --no-daemon --stacktrace \
+            -PwebRoot="${{ steps.webroot.outputs.web_root }}" \
+            "${GRADLE_ARGS[@]}"
+
+      - name: Inspect APK (permissions / signature / bundled assets)
+        run: |
+          set -euo pipefail
+          APK="$(find android/app/build/outputs/apk/release -maxdepth 1 -type f -name '*.apk' -print -quit)"
+          if [ -z "$APK" ]; then
+            echo "::error::没有找到 release APK"
+            exit 1
+          fi
+          echo "APK = $APK"
+          ls -lh "$APK"
+          echo "sha256 = $(sha256sum "$APK" | cut -d' ' -f1)"
+          BUILD_TOOLS="$(find "$ANDROID_HOME/build-tools" -maxdepth 1 -mindepth 1 -type d | sort -V | tail -n 1)"
+          echo "build-tools = $BUILD_TOOLS"
+
+          echo "----- badging -----"
+          "$BUILD_TOOLS/aapt" dump badging "$APK" | head -n 12 || true
+
+          echo "----- permissions -----"
+          "$BUILD_TOOLS/aapt" dump permissions "$APK" | tee /tmp/permissions.txt || true
+          if grep -q "android.permission.INTERNET" /tmp/permissions.txt; then
+            echo "::error::APK 中出现了 INTERNET 权限 —— 本作要求纯离线，不允许申请网络权限"
+            exit 1
+          fi
+          if grep -q "uses-permission" /tmp/permissions.txt; then
+            echo "::warning::APK 声明了权限，请确认是否必要（本作设计为 0 权限）"
+          fi
+
+          echo "----- signature -----"
+          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs "$APK" || true
+
+          echo "----- bundled web assets -----"
+          if ! unzip -l "$APK" | grep -q "assets/www/index.html"; then
+            echo "::error::APK 内缺少 assets/www/index.html —— copyWebAssets 未生效"
+            exit 1
+          fi
+          unzip -l "$APK" | grep -E "assets/www/(index\.html|css/|js/|assets/)" | head -n 12 || true
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sakuraoka-records-apk
+          path: android/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Attach APK to GitHub Release (tag only)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: android/app/build/outputs/apk/release/*.apk
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Job summary
+        if: always()
+        run: |
+          {
+            echo "## Android APK build"
+            echo ""
+            echo "| 项 | 值 |"
+            echo "|---|---|"
+            echo "| ref | \`${{ github.ref }}\` |"
+            echo "| sha | \`${{ github.sha }}\` |"
+            echo "| web root | \`${{ steps.webroot.outputs.web_root || 'unknown' }}\` |"
+            echo "| keystore | ${{ steps.keystore.outputs.has_keystore == 'true' && 'release keystore ✅' || 'debug fallback ⚠️' }} |"
+            echo ""
+            APK="$(find android/app/build/outputs/apk/release -maxdepth 1 -type f -name '*.apk' -print -quit 2>/dev/null || true)"
+            if [ -n "${APK:-}" ]; then
+              echo "- APK：\`$APK\`（$(du -h "$APK" | cut -f1)）"
+              echo "- sha256：\`$(sha256sum "$APK" | cut -d' ' -f1)\`"
+              echo "- 下载：本次 run 页面的 Artifacts → \`sakuraoka-records-apk\`"
+            else
+              echo "- ❌ 没有找到 APK，请查看上面的构建日志"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
