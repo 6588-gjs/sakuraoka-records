@@ -1,0 +1,846 @@
+/* ==========================================================================
+ * mobile.css — 移动端适配（竖屏优先，兼容平板/横屏/桌面）
+ * 核心原则：
+ *   1. 浏览器 chrome 压缩为 2 行，内容区内部滚动，绝不出现页面级横向滚动
+ *   2. 所有可点击控件触控区 ≥ 44×44px
+ *   3. 100dvh + safe-area，适配刘海屏与底部手势条
+ *   4. 输入框 16px 以上，避免 iOS 自动放大
+ * ========================================================================== */
+
+/* --------------------------------------------------------------------------
+ * 1. 平板 / 手机（< 900px）
+ * -------------------------------------------------------------------------- */
+@media (max-width: 899px) {
+  /* ---- 窗口全屏化，安全区由窗口背景填充 ---- */
+  .game-screen {
+    padding: 0;
+    background: var(--win-face);
+  }
+
+  .ie-window {
+    max-width: none;
+    height: 100%;
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
+    background: var(--win-face);
+    border: none;
+    box-shadow: none;
+  }
+
+  /* ---- 第 1 行：标题栏（44px 高） ---- */
+  .ie-titlebar {
+    min-height: 44px;
+    padding: 0 4px 0 8px;
+    gap: 6px;
+  }
+
+  .ie-title {
+    font-size: 0.74rem;
+  }
+
+  .ie-title-tools .ie-tool,
+  .ie-titlebar .ie-tool {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 1px 4px;
+  }
+
+  .ie-title-tools .ie-tool .lbl {
+    font-size: 0.54rem;
+  }
+
+  .ie-winbtns {
+    display: none;
+  }
+
+  /* ---- 隐藏桌面专用的菜单栏 / 状态栏 / 地址标签 ---- */
+  .ie-menubar,
+  .ie-statusbar,
+  .ie-addr-label,
+  .ie-desktop-only,
+  .ie-go {
+    display: none;
+  }
+
+  /* ---- 第 2 行：工具栏 + 地址（压缩为一行） ---- */
+  .ie-toolbar {
+    min-height: 48px;
+    padding: 2px 4px;
+    gap: 3px;
+  }
+
+  .ie-toolbar .ie-tool,
+  .ie-toolbar .ie-tool.tool-wide {
+    flex-direction: column;
+    gap: 1px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 1px 3px;
+  }
+
+  .ie-toolbar .ie-tool .glyph {
+    font-size: 0.95rem;
+  }
+
+  .ie-toolbar .ie-tool .lbl {
+    font-size: 0.52rem;
+  }
+
+  .ie-toolbar .ie-tool.tool-wide .lbl {
+    font-size: 0.52rem;
+  }
+
+  .ie-address {
+    padding: 0 2px;
+  }
+
+  .ie-address .ie-url {
+    height: 30px;
+    padding: 2px 5px;
+    font-size: 0.58rem;
+    line-height: 24px;
+  }
+
+  /* ---- 内容区 ---- */
+  .ie-content {
+    padding: 6px;
+  }
+
+  .ie-content::after {
+    height: 10px;
+  }
+
+  /* ---- 站点外壳：去掉桌面阴影，铺满宽度 ---- */
+  .site-shell,
+  .archive-shell,
+  .memo-shell {
+    max-width: none;
+    width: 100%;
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+  }
+
+  .site-shell {
+    font-size: 0.84rem;
+  }
+
+  /* ---- 所有按钮类控件 ≥ 44×44 触控区 ---- */
+  .mini95 {
+    min-height: 44px;
+  }
+
+  .dialog-close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .memo-head .lnk {
+    display: inline-flex;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .site-nav .lnk {
+    display: inline-flex;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .site-main .lnk,
+  .news-list .lnk,
+  .archive-box .lnk,
+  .side-box .lnk {
+    display: inline-flex;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    text-align: left;
+  }
+
+  .site-search button,
+  .mobile-search button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* ---- 手机专用搜索条 ---- */
+  .mobile-search {
+    display: flex;
+  }
+
+  .mobile-search input,
+  .mobile-search button {
+    font-size: 16px;
+  }
+
+  /* ---- 站点头压缩 ---- */
+  .site-header {
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .site-logo {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+  }
+
+  .site-name {
+    font-size: 1.06rem;
+    letter-spacing: 0.06em;
+  }
+
+  .site-sub {
+    font-size: 0.48rem;
+    letter-spacing: 0.1em;
+  }
+
+  .site-since {
+    padding: 2px 4px;
+    font-size: 0.54rem;
+  }
+
+  /* ---- 导航：横向滚动，不再换行堆高 ---- */
+  .site-nav {
+    flex-wrap: nowrap;
+    gap: 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 8px;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav .lnk {
+    display: inline-flex;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 4px;
+    flex: 0 0 auto;
+    font-size: 0.68rem;
+  }
+
+  .site-nav .sep {
+    display: none;
+  }
+
+  /* ---- 单栏：侧栏在手机端省略（顶部导航已覆盖同样入口） ---- */
+  .site-layout {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .site-side {
+    display: none;
+  }
+
+  .site-main {
+    padding: 10px 12px 16px;
+  }
+
+  .page-title {
+    font-size: 1.12rem;
+    margin-bottom: 8px;
+  }
+
+  .news-date {
+    display: block;
+    width: auto;
+    margin-bottom: 1px;
+  }
+
+  .news-list li {
+    padding: 6px 0;
+  }
+
+  .retro-table {
+    font-size: 0.66rem;
+  }
+
+  /* ---- 档案库单栏 ---- */
+  .archive-layout {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .archive-side {
+    border-right: none;
+    border-bottom: 1px solid var(--arch-line);
+    padding: 8px;
+  }
+
+  .archive-main {
+    padding: 10px 8px;
+  }
+
+  .archive-header {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+
+  .archive-title {
+    font-size: 0.94rem;
+  }
+
+  .archive-header-tools {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .archive-header-tools .mini95 {
+    min-height: 44px;
+    flex: 1 1 30%;
+  }
+
+  .doc-view {
+    padding: 10px;
+  }
+
+  .doc-body {
+    font-size: 0.8rem;
+  }
+
+  /* ---- 登录窗口 ---- */
+  .login-panel {
+    margin: 10px 0;
+    max-width: none;
+    padding: 14px;
+  }
+
+  .login-panel h2 {
+    margin: -14px -14px 10px;
+  }
+
+  .login-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ---- 表单输入：16px 防 iOS 放大 ---- */
+  .ie-content input,
+  .ie-content textarea,
+  .ie-content select {
+    font-size: 16px;
+  }
+
+  .login-field input,
+  .field95 input {
+    min-height: 44px;
+  }
+
+  /* ---- 推理板：证据横向滚动 + 板面固定高度 ---- */
+  .memo-shell {
+    padding: 8px;
+  }
+
+  .memo-layout {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .clue-panel {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .clue-panel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .clue-panel .section-title,
+  .clue-panel-tip,
+  .clue-empty {
+    display: none;
+  }
+
+  .clue-card {
+    flex: 0 0 156px;
+    align-self: flex-start;
+    width: 156px;
+    min-height: 96px;
+    margin-bottom: 0;
+    cursor: pointer;
+  }
+
+  .memo-board {
+    min-height: 320px;
+    height: 44dvh;
+    max-height: 420px;
+  }
+
+  .memo-node {
+    width: 100px;
+    max-width: 32%;
+    padding: 5px;
+  }
+
+  .memo-node .name {
+    font-size: 0.6rem;
+  }
+
+  .memo-node .desc {
+    font-size: 0.54rem;
+  }
+
+  .memo-controls {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    margin-top: 6px;
+    background: #f6f0dc;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .memo-controls .btn95 {
+    min-height: 44px;
+  }
+
+  .memo-head {
+    font-size: 0.74rem;
+  }
+
+  /* ---- 终端 ---- */
+  .term-box {
+    padding: 10px;
+    font-size: 0.76rem;
+  }
+
+  .puzzle-option {
+    font-size: 0.8rem;
+  }
+
+  .term-input {
+    height: 44px;
+  }
+
+  .term-button {
+    min-height: 44px;
+  }
+
+  /* ---- 全屏界面 ---- */
+  .screen {
+    padding: calc(12px + var(--safe-top)) calc(12px + var(--safe-right)) calc(12px + var(--safe-bottom)) calc(12px + var(--safe-left));
+    justify-content: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .screen > .win-window {
+    margin: auto 0;
+  }
+
+  .title-screen {
+    padding-top: calc(14px + var(--safe-top));
+  }
+
+  .title-window {
+    width: 100%;
+    max-height: none;
+  }
+
+  .title-body {
+    padding: 14px;
+  }
+
+  .title-logo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 6px;
+  }
+
+  .title-logo img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .title-main {
+    font-size: 1.28rem;
+  }
+
+  .title-zh {
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+  }
+
+  .title-desc {
+    margin-top: 10px;
+    font-size: 0.68rem;
+    padding: 8px 10px;
+  }
+
+  .title-menu {
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .title-menu .win-btn {
+    min-height: 48px;
+  }
+
+  .title-meta {
+    font-size: 0.58rem;
+  }
+
+  /* 启动画面 */
+  .intro-screen {
+    padding-top: calc(10px + var(--safe-top));
+  }
+
+  .intro-window {
+    width: 100%;
+  }
+
+  .intro-titles h1 {
+    font-size: 1.15rem;
+  }
+
+  .intro-text {
+    max-height: none;
+    font-size: 0.76rem;
+  }
+
+  .intro-body {
+    padding: 12px;
+  }
+
+  /* 过场 */
+  .cutscene-screen {
+    padding: calc(20px + var(--safe-top)) 18px calc(20px + var(--safe-bottom));
+    justify-content: flex-start;
+  }
+
+  .cutscene-inner {
+    margin: auto 0;
+  }
+
+  .cutscene-text {
+    font-size: 1.02rem;
+    line-height: 2;
+  }
+
+  .cutscene-zh {
+    font-size: 0.76rem;
+  }
+
+  /* 结局 */
+  .ending-screen {
+    padding: calc(14px + var(--safe-top)) 10px calc(28px + var(--safe-bottom));
+  }
+
+  .ending-inner {
+    padding: 16px 14px;
+  }
+
+  .ending-inner h1 {
+    font-size: 1.3rem;
+  }
+
+  .ending-actions .win-btn {
+    min-height: 44px;
+  }
+
+  /* ---- 弹窗：接近全宽，纵向滚动 ---- */
+  .overlay {
+    padding: calc(10px + var(--safe-top)) calc(8px + var(--safe-right)) calc(10px + var(--safe-bottom)) calc(8px + var(--safe-left));
+    align-items: flex-end;
+  }
+
+  .dialog,
+  .dialog.wide {
+    width: 100%;
+    max-height: calc(100dvh - 20px - var(--safe-top) - var(--safe-bottom));
+  }
+
+  .dialog-head {
+    min-height: 36px;
+    font-size: 0.8rem;
+  }
+
+  .dialog-close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .dialog-body {
+    padding: 12px;
+    font-size: 0.8rem;
+  }
+
+  .dialog-foot {
+    padding: 0 12px 12px;
+  }
+
+  .dialog-foot .win-btn {
+    min-height: 44px;
+    flex: 1 1 auto;
+  }
+
+  .menu-list .win-btn {
+    min-height: 48px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .seg .win-btn {
+    min-height: 44px;
+    min-width: 52px;
+  }
+
+  .set-row {
+    padding: 10px 2px;
+  }
+
+  .doc-prose {
+    font-size: 0.78rem;
+  }
+
+  .hint-steps li {
+    font-size: 0.76rem;
+  }
+
+  /* ---- Toast 提升到底部安全区上方 ---- */
+  .toast {
+    bottom: calc(16px + var(--safe-bottom));
+    max-width: 92vw;
+    font-size: 0.76rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * 2. 小平板 / 横屏手机
+ * -------------------------------------------------------------------------- */
+@media (min-width: 600px) and (max-width: 899px) {
+  .mobile-search {
+    display: none;
+  }
+
+  .site-layout {
+    grid-template-columns: 150px minmax(0, 1fr);
+  }
+
+  .site-side {
+    display: block;
+  }
+
+  .memo-layout {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+
+  .clue-panel {
+    display: block;
+    max-height: 420px;
+    overflow-y: auto;
+  }
+
+  .clue-panel .section-title,
+  .clue-panel-tip {
+    display: block;
+  }
+
+  .clue-card {
+    width: 100%;
+    min-height: 0;
+    margin-bottom: 6px;
+  }
+
+  .archive-layout {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+
+  .archive-side {
+    border-right: 1px solid var(--arch-line);
+    border-bottom: none;
+  }
+
+  .login-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .title-window {
+    width: min(480px, 100%);
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * 3. 超窄屏（≤ 360px）
+ * -------------------------------------------------------------------------- */
+@media (max-width: 360px) {
+  html {
+    font-size: 14px;
+  }
+
+  html[data-fs="s"] {
+    font-size: 12.5px;
+  }
+
+  html[data-fs="l"] {
+    font-size: 15.5px;
+  }
+
+  .ie-titlebar {
+    min-height: 42px;
+  }
+
+  .ie-toolbar {
+    min-height: 46px;
+  }
+
+  .ie-toolbar .ie-tool,
+  .ie-titlebar .ie-tool {
+    min-width: 44px;
+  }
+
+  .site-name {
+    font-size: 0.98rem;
+  }
+
+  .site-main {
+    padding: 8px 10px 14px;
+  }
+
+  .title-main {
+    font-size: 1.14rem;
+  }
+
+  .title-zh {
+    font-size: 0.82rem;
+  }
+
+  .title-menu .win-btn {
+    font-size: 0.84rem;
+  }
+
+  .memo-board {
+    height: 40dvh;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * 4. 低高度横屏（保证可用，不追求最优）
+ * -------------------------------------------------------------------------- */
+@media (max-height: 520px) and (orientation: landscape) {
+  .title-screen,
+  .lang-screen {
+    justify-content: flex-start;
+  }
+
+  .title-logo {
+    display: none;
+  }
+
+  .title-desc {
+    display: none;
+  }
+
+  .title-menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .intro-titles {
+    display: none;
+  }
+
+  .cutscene-text {
+    font-size: 0.95rem;
+  }
+
+  .dialog {
+    max-height: calc(100dvh - 12px);
+  }
+
+  .memo-board {
+    height: 56dvh;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * 5. 桌面（≥ 900px）：补充交互细节
+ * -------------------------------------------------------------------------- */
+@media (min-width: 900px) {
+  .ie-toolbar .ie-tool .glyph {
+    font-size: 0.9rem;
+  }
+
+  .ie-toolbar .ie-tool .lbl {
+    font-size: 0.56rem;
+  }
+
+  .title-menu .win-btn:hover,
+  .dialog-foot .win-btn:hover,
+  .menu-list .win-btn:hover {
+    background: #d4d0c8;
+  }
+
+  .menu-list .win-btn:hover {
+    background: var(--win-navy);
+    color: #fff;
+  }
+
+  .menu-list .win-btn:hover .mi-sub {
+    color: #c8d6ec;
+  }
+
+  .clue-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 3px 3px 0 #b8a888;
+  }
+
+  .arc-doc:hover {
+    cursor: pointer;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * 6. 触屏：杜绝双击缩放 / 长按菜单
+ * -------------------------------------------------------------------------- */
+@media (pointer: coarse) {
+  body {
+    touch-action: manipulation;
+  }
+
+  .ie-content,
+  .clue-panel,
+  .site-nav,
+  .dialog-body,
+  .win-body {
+    touch-action: pan-y;
+  }
+
+  .clue-panel,
+  .site-nav {
+    touch-action: pan-x;
+  }
+
+  button,
+  .clue-card,
+  .memo-node,
+  .arc-doc,
+  .puzzle-option {
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+}

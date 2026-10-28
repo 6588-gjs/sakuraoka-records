@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="旧樱丘高中 记录室 徽章">
+  <defs>
+    <radialGradient id="bg" cx="38%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#123a63"/>
+      <stop offset="100%" stop-color="#001a33"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f2d98a"/>
+      <stop offset="55%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#8c6d1f"/>
+    </linearGradient>
+  </defs>
+  <circle cx="64" cy="64" r="61" fill="url(#bg)" stroke="url(#ring)" stroke-width="3"/>
+  <circle cx="64" cy="64" r="52" fill="none" stroke="#d4af37" stroke-width="1" opacity=".65"/>
+  <g fill="#e8c9c9" opacity=".92">
+    <ellipse cx="64" cy="38" rx="6" ry="10"/>
+    <ellipse cx="88" cy="52" rx="6" ry="10" transform="rotate(72 88 52)"/>
+    <ellipse cx="88" cy="78" rx="6" ry="10" transform="rotate(144 88 78)"/>
+    <ellipse cx="64" cy="92" rx="6" ry="10" transform="rotate(216 64 92)"/>
+    <ellipse cx="40" cy="78" rx="6" ry="10" transform="rotate(288 40 78)"/>
+    <ellipse cx="40" cy="52" rx="6" ry="10" transform="rotate(360 40 52)"/>
+  </g>
+  <circle cx="64" cy="64" r="17" fill="#b23a48"/>
+  <text x="64" y="71" text-anchor="middle" font-family="'Yu Mincho','MS Mincho',serif" font-size="21" fill="#f6e3c4">桜</text>
+  <text x="64" y="116" text-anchor="middle" font-family="Consolas,monospace" font-size="8" letter-spacing="2" fill="#d4af37">SAKURAOKA 1998</text>
+</svg>

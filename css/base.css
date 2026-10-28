@@ -1,0 +1,509 @@
+/* ==========================================================================
+ * base.css — 设计变量、重置、基础排版、通用控件与工具类
+ * 视觉基调：1998 年日式学校官网 + Windows 95 对话框 + 档案室悬疑
+ * ========================================================================== */
+
+/* --------------------------------------------------------------------------
+ * 1. 设计变量
+ * -------------------------------------------------------------------------- */
+:root {
+  /* Win95 控件色 */
+  --win-face: #c0c0c0;
+  --win-light: #ffffff;
+  --win-highlight: #dfdfdf;
+  --win-shadow: #808080;
+  --win-dark: #404040;
+  --win-navy: #000080;
+  --win-navy-2: #1084d0;
+  /* 桌面与站点 */
+  --desk-1: #3a6ea5;
+  --desk-2: #24507a;
+  --desk-3: #1a3a5c;
+  --paper: #fffef7;
+  --paper-2: #f3eedf;
+  --paper-3: #e8e4d8;
+  --ink: #111111;
+  --sub-ink: #555555;
+  --site-navy: #003366;
+  --site-gold: #d4af37;
+  --site-nav: #e6e0cc;
+  --link: #0000cc;
+  --link-hover: #cc0000;
+  /* 档案库（深蓝） */
+  --arch-bg: #0f1a24;
+  --arch-panel: #101c26;
+  --arch-deep: #0b141c;
+  --arch-line: #2f4558;
+  --arch-line-2: #5b7a91;
+  --arch-text: #c8d0d8;
+  --arch-dim: #6f8799;
+  --arch-gold: #d9c9a3;
+  /* 里网页（暗红） */
+  --under-bg: #050505;
+  --under-panel: #0b0707;
+  --under-line: #4a1f1f;
+  --under-red: #b84a4a;
+  --under-text: #b9a7a7;
+  /* 第二幕终端（绿色） */
+  --term-bg: #020a04;
+  --term-panel: #061008;
+  --term-line: #2a6a3a;
+  --term-text: #8fdc9f;
+  --term-bright: #b8f0c0;
+  /* 推理板（牛皮纸） */
+  --memo-bg: #d9c9a3;
+  --memo-panel: #f6f0dc;
+  --memo-board: #c9b68e;
+  --memo-line: #8a7a5a;
+  /* 语义色 */
+  --danger: #8a1f1f;
+  --danger-soft: #d98a8a;
+  --ok: #2f6a3a;
+  --gold: #d4af37;
+  /* 尺寸 */
+  --tap: 44px;
+  --radius-95: 0;
+  --shadow-win: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  --font-ui: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", sans-serif;
+  --font-mono: Consolas, "Courier New", "MS Gothic", monospace;
+  --font-serif: "Yu Mincho", "MS Mincho", "Songti SC", "SimSun", serif;
+  --font-gothic: "MS PGothic", "MS Gothic", "Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+}
+
+/* 字号档位：根字号由设置切换，正文统一使用 rem 以便整体缩放 */
+html {
+  font-size: 15px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html[data-fs="s"] {
+  font-size: 13px;
+}
+
+html[data-fs="l"] {
+  font-size: 17px;
+}
+
+/* --------------------------------------------------------------------------
+ * 2. 重置
+ * -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--paper-3);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.65;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+figure,
+blockquote {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  touch-action: manipulation;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: 1rem;
+  color: inherit;
+  touch-action: manipulation;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--link);
+}
+
+table {
+  border-collapse: collapse;
+}
+
+/* --------------------------------------------------------------------------
+ * 3. 应用根节点
+ * -------------------------------------------------------------------------- */
+.app-root {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@supports (height: 100dvh) {
+  .app-root {
+    height: 100dvh;
+  }
+}
+
+.noscript {
+  margin: 40px auto;
+  max-width: 420px;
+  padding: 16px;
+  background: var(--win-face);
+  border: 2px outset var(--win-light);
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+ * 4. Windows 95 通用控件
+ * -------------------------------------------------------------------------- */
+.win-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
+  min-height: 38px;
+  padding: 0.35em 1em;
+  background: var(--win-face);
+  color: #000;
+  border: 2px outset var(--win-light);
+  border-radius: var(--radius-95);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  line-height: 1.25;
+  text-align: center;
+  touch-action: manipulation;
+}
+
+.win-btn:active:not(:disabled) {
+  border-style: inset;
+}
+
+.win-btn:disabled {
+  color: var(--win-shadow);
+  text-shadow: 1px 1px 0 var(--win-light);
+}
+
+.win-btn.primary {
+  background: var(--win-navy);
+  color: #fff;
+  border-color: #6a8ac0 var(--win-dark) var(--win-dark) #6a8ac0;
+}
+
+.win-btn.primary:disabled {
+  background: #7c86a0;
+  color: #e0e0e0;
+}
+
+.mini95 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25em;
+  min-height: 34px;
+  padding: 0.2em 0.7em;
+  background: #162633;
+  color: #a9c3d6;
+  border: 1px solid #3d566b;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.mini95.active {
+  border-color: var(--arch-gold);
+  color: var(--arch-gold);
+}
+
+.mini95:active {
+  border-style: inset;
+}
+
+/* 复用原版的灰底按钮（浅色站点内） */
+.btn95 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3em;
+  min-height: 38px;
+  padding: 0.25em 0.9em;
+  background: var(--win-face);
+  color: #000;
+  border: 2px outset var(--win-light);
+  font-family: var(--font-gothic);
+  font-size: 0.82rem;
+}
+
+.btn95:active:not(:disabled) {
+  border-style: inset;
+}
+
+.btn95:disabled {
+  color: var(--win-shadow);
+  text-shadow: 1px 1px 0 var(--win-light);
+}
+
+/* 站点内文字链接按钮（原版 .lnk） */
+.lnk {
+  display: inline;
+  padding: 0;
+  color: var(--link);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: left;
+  line-height: inherit;
+}
+
+.lnk:hover {
+  color: var(--link-hover);
+}
+
+/* --------------------------------------------------------------------------
+ * 5. 排版工具类
+ * -------------------------------------------------------------------------- */
+.muted {
+  color: #666;
+  font-size: 0.75rem;
+}
+
+.tiny {
+  color: #777;
+  font-size: 0.68rem;
+  line-height: 1.7;
+}
+
+.red {
+  color: var(--danger);
+}
+
+.gold {
+  color: var(--gold);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.serif {
+  font-family: var(--font-serif);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.center {
+  text-align: center;
+}
+
+/* 中文翻译框（双语模式下的标准组件，沿用原版） */
+.zh-box {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 1px dashed #7a7a7a;
+  background: #f5f5e8;
+  color: #333;
+  font-size: 0.8rem;
+  line-height: 1.85;
+  font-family: var(--font-ui);
+}
+
+.zh-box b {
+  color: #666;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.translated {
+  font-size: 0.88rem;
+  line-height: 1.85;
+}
+
+/* 中文正文内的小号说明（完整样式定义在 site.css 中，随站点主题变化） */
+
+/* --------------------------------------------------------------------------
+ * 6. 动画（尊重 prefers-reduced-motion）
+ * -------------------------------------------------------------------------- */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes underflash {
+  0% {
+    filter: invert(1);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes rise-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * 7. 滚动条（复古细条）
+ * -------------------------------------------------------------------------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #808080 #d8d3c6;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #d8d3c6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #808080;
+  border: 1px solid #a8a294;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* --------------------------------------------------------------------------
+ * 8. 焦点可见性（键盘/辅助技术）
+ * -------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid #ffbf47;
+  outline-offset: 1px;
+}
+
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* 触屏设备把所有交互控件撑到 44px 以上 */
+@media (pointer: coarse) {
+  .win-btn,
+  .btn95,
+  .term-button,
+  .lnk {
+    min-height: var(--tap);
+  }
+}

@@ -1,0 +1,359 @@
+/* ==========================================================================
+ * chrome.css — 浏览器窗口外壳（IE6 风格）
+ * 桌面：标题栏 / 菜单栏 / 工具栏 / 地址栏 / 内容区 / 状态栏
+ * 手机：压缩为 2 行（标题栏 + 工具/地址栏），内容区内部滚动
+ * ========================================================================== */
+
+/* --------------------------------------------------------------------------
+ * 1. 桌面背景（Win95 蓝桌面）
+ * -------------------------------------------------------------------------- */
+.page-body {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.16), transparent 45%),
+    linear-gradient(135deg, var(--desk-1) 0%, var(--desk-2) 55%, var(--desk-3) 100%);
+}
+
+.game-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: stretch;
+  width: 100%;
+  height: 100%;
+  padding: max(10px, var(--safe-top)) max(10px, var(--safe-right)) max(10px, var(--safe-bottom)) max(10px, var(--safe-left));
+}
+
+/* --------------------------------------------------------------------------
+ * 2. 浏览器主窗口
+ * -------------------------------------------------------------------------- */
+.ie-window {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1120px;
+  height: 100%;
+  min-height: 0;
+  background: var(--win-face);
+  border: 2px outset var(--win-light);
+  box-shadow: var(--shadow-win);
+  overflow: hidden;
+}
+
+/* 外层窗口把安全区也覆盖到，避免刘海/手势条处露出桌面 */
+@media (max-width: 899px) {
+  .game-screen {
+    padding: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * 3. 标题栏
+ * -------------------------------------------------------------------------- */
+.ie-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 3px 4px 3px 7px;
+  background: linear-gradient(90deg, var(--win-navy), var(--win-navy-2));
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.ie-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+}
+
+.ie-mark img {
+  width: 18px;
+  height: 18px;
+}
+
+.ie-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ie-title-tools {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex: 0 0 auto;
+}
+
+/* 标题栏上的小按钮（翻译 / 菜单） */
+.ie-tool {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  min-width: 34px;
+  min-height: 30px;
+  padding: 1px 5px;
+  background: var(--win-face);
+  color: #000;
+  border: 2px outset var(--win-light);
+  font-family: var(--font-ui);
+  line-height: 1;
+  touch-action: manipulation;
+}
+
+.ie-tool:active:not(:disabled) {
+  border-style: inset;
+}
+
+.ie-tool:disabled {
+  color: var(--win-shadow);
+  text-shadow: 1px 1px 0 var(--win-light);
+}
+
+.ie-tool .glyph {
+  font-size: 0.92rem;
+  line-height: 1.1;
+}
+
+.ie-tool .lbl {
+  font-size: 0.58rem;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.ie-title-tools .ie-tool {
+  min-height: 26px;
+  min-width: 40px;
+  border-color: var(--win-light) var(--win-dark) var(--win-dark) var(--win-light);
+}
+
+/* Windows 标题栏右侧装饰按钮 */
+.ie-winbtns {
+  display: flex;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.ie-winbtns span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 16px;
+  background: var(--win-face);
+  color: #000;
+  border: 2px outset var(--win-light);
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+ * 4. 菜单栏（仅桌面显示）
+ * -------------------------------------------------------------------------- */
+.ie-menubar {
+  display: flex;
+  gap: 18px;
+  padding: 2px 10px;
+  background: var(--win-face);
+  border-bottom: 1px solid var(--win-shadow);
+  color: #000;
+  font-family: var(--font-gothic);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+ * 5. 工具栏 + 地址栏（手机上的第 2 行）
+ * -------------------------------------------------------------------------- */
+.ie-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 5px;
+  background: var(--win-face);
+  border-bottom: 1px solid var(--win-shadow);
+  border-top: 1px solid var(--win-light);
+  min-height: 40px;
+}
+
+.ie-toolbar .ie-tool {
+  flex: 0 0 auto;
+}
+
+.ie-toolbar .ie-tool.tool-wide {
+  flex-direction: row;
+  gap: 4px;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+}
+
+.ie-toolbar .ie-tool.tool-wide .lbl {
+  font-size: 0.72rem;
+}
+
+/* 地址栏：IE6 的白色凹陷条 */
+.ie-address {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 2px 4px;
+  background: var(--win-face);
+}
+
+.ie-addr-label {
+  flex: 0 0 auto;
+  font-family: var(--font-gothic);
+  font-size: 0.65rem;
+  color: #000;
+  white-space: nowrap;
+}
+
+.ie-address .ie-url {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 24px;
+  padding: 2px 6px;
+  overflow: hidden;
+  background: #fff;
+  border: 2px inset var(--win-light);
+  color: #000;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  line-height: 18px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ie-address .ie-url::after {
+  content: "";
+}
+
+.ie-go {
+  flex: 0 0 auto;
+}
+
+/* 桌面专用的额外按钮（手机隐藏） */
+.ie-desktop-only {
+  display: inline-flex;
+}
+
+/* --------------------------------------------------------------------------
+ * 6. 内容区
+ * -------------------------------------------------------------------------- */
+.ie-content {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--paper-3);
+  padding: 10px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scroll-behavior: auto;
+}
+
+.ie-content.theme-act2 {
+  background: #04100a;
+}
+
+.ie-content.theme-act3 {
+  background: #d8d3c6;
+}
+
+/* 内容区到底的提示（手机端滚动可见） */
+.ie-content::after {
+  content: "";
+  display: block;
+  height: 4px;
+}
+
+/* --------------------------------------------------------------------------
+ * 7. 状态栏（仅桌面显示）
+ * -------------------------------------------------------------------------- */
+.ie-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-height: 22px;
+  padding: 1px 8px;
+  background: var(--win-face);
+  border-top: 1px solid var(--win-light);
+  color: #000;
+  font-family: var(--font-gothic);
+  font-size: 0.62rem;
+}
+
+.ie-statusbar .sb-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 6px;
+  border: 1px inset var(--win-light);
+  background: var(--win-face);
+  white-space: nowrap;
+}
+
+.ie-statusbar .sb-cell.danger {
+  color: var(--danger);
+}
+
+/* --------------------------------------------------------------------------
+ * 8. 轻提示 Toast
+ * -------------------------------------------------------------------------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + var(--safe-bottom));
+  z-index: 2000;
+  max-width: min(88vw, 460px);
+  padding: 9px 14px;
+  transform: translate(-50%, 14px);
+  background: #ffffe1;
+  color: #000;
+  border: 1px solid #000;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.toast.error {
+  background: #ffe1e1;
+  border-color: #8a1f1f;
+  color: #7a1010;
+}
+
+.toast.ok {
+  background: #e7f5e8;
+  border-color: #2f6a3a;
+  color: #1f4a29;
+}
+
+/* --------------------------------------------------------------------------
+ * 9. 手机端压缩（此处的关键覆盖放在 mobile.css 中统一处理）
+ * -------------------------------------------------------------------------- */

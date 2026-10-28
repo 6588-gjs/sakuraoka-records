@@ -1,31 +1,65 @@
-﻿<!DOCTYPE html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-CN" data-fs="m">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>旧樱丘高中记录室残存档案</title>
-<style>
-body{margin:0;min-height:100dvh;background:linear-gradient(135deg,#3a6ea5,#24507a);display:flex;align-items:center;justify-content:center;font-family:"SimSun","MS PGothic",serif;color:#000;}
-.win{width:min(560px,92vw);background:#c0c0c0;border:2px outset #fff;box-shadow:8px 8px 0 rgba(0,0,0,.35);}
-.bar{background:linear-gradient(90deg,#000080,#1084d0);color:#fff;padding:4px 8px;font:bold 13px/1.4 "SimSun",serif;display:flex;justify-content:space-between;}
-.body{padding:22px 20px;font-size:14px;line-height:1.9;}
-h1{font-size:22px;margin:0 0 6px;color:#000080;letter-spacing:.08em;}
-.sub{font-size:11px;color:#444;letter-spacing:.2em;margin-bottom:16px;}
-.btn{background:#c0c0c0;border:2px outset #fff;padding:4px 16px;font:13px "SimSun",serif;cursor:pointer;text-decoration:none;color:#000;display:inline-block;}
-.note{font-size:11px;color:#555;border-top:1px solid #888;margin-top:16px;padding-top:10px;line-height:1.8;}
-</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#000080">
+<meta name="format-detection" content="telephone=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="旧樱丘高中记录室残存档案：1998 年日式复古校园网站风格的互动叙事解谜游戏。三幕故事、4 个结局、证据合成推理板，离线可玩。">
+<title>旧樱丘高中记录室残存档案 V1.1.0</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo-sakura.svg">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/chrome.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/archive.css">
+<link rel="stylesheet" href="css/memo.css">
+<link rel="stylesheet" href="css/screens.css">
+<link rel="stylesheet" href="css/mobile.css">
 </head>
-<body>
-<div class="win">
-  <div class="bar"><span>记录室终端 — 旧樱丘高中</span><span>_ □ ×</span></div>
-  <div class="body">
-    <h1>旧樱丘高中记录室残存档案</h1>
-    <div class="sub">SAKURAOKA HIGH SCHOOL — RECORDS ROOM REMAINING FILES</div>
-    <p>旧校舍拆除前夜，你打开了姐姐留下的记录室档案。</p>
-    <p>本页面为游戏稳定访问通道，正式版本部署中。</p>
-    <p><a class="btn" href="./play/">进入记录室</a></p>
-    <div class="note">本站为游戏官方网站，不收集任何个人信息。<br>© 2026 旧樱丘记录室工作室</div>
-  </div>
+<body class="page-body">
+<!-- 游戏根节点：所有界面由 js/ui/screens.js 渲染到这里 -->
+<div id="app" class="app-root" role="application" aria-label="旧樱丘高中记录室残存档案">
+  <noscript>
+    <div class="noscript">此游戏需要启用 JavaScript 才能运行。</div>
+  </noscript>
 </div>
+<!-- 全局轻提示（证据入手、错误提示等） -->
+<div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+<!-- 全局读屏播报区 -->
+<div id="sr-live" class="sr-only" aria-live="polite"></div>
+
+<!-- ===== 基础命名空间（classic script，无构建步骤） ===== -->
+<script src="js/namespace.js"></script>
+
+<!-- ===== 数据层：证据 / 文档 / 剧情页面 / 结局 / 提示 / UI 文案 ===== -->
+<script src="js/data/clues.js"></script>
+<script src="js/data/documents.js"></script>
+<script src="js/data/endings.js"></script>
+<script src="js/data/ui-text.js"></script>
+<script src="js/data/pages-act1.js"></script>
+<script src="js/data/pages-act2.js"></script>
+<script src="js/data/pages-act3.js"></script>
+<script src="js/data/hints.js"></script>
+
+<!-- ===== 核心层：存档 / 状态 / 音效 / 推理板 / 谜题 / 路由 ===== -->
+<script src="js/core/storage.js"></script>
+<script src="js/core/state.js"></script>
+<script src="js/core/audio.js"></script>
+<script src="js/core/taptap.js"></script>
+<script src="js/core/board.js"></script>
+<script src="js/core/puzzles.js"></script>
+<script src="js/core/router.js"></script>
+
+<!-- ===== 表现层：DOM 外壳 / 界面 / 弹窗 / 事件绑定 ===== -->
+<script src="js/ui/toast.js"></script>
+<script src="js/ui/shell.js"></script>
+<script src="js/ui/screens.js"></script>
+<script src="js/ui/overlays.js"></script>
+<script src="js/ui/bind.js"></script>
+
+<!-- ===== 启动入口与调试 API ===== -->
+<script src="js/main.js"></script>
+<script src="js/debug.js"></script>
 </body>
 </html>

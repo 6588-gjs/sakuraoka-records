@@ -1,0 +1,1004 @@
+/* ==========================================================================
+ * screens.css — 全屏界面（标题 / 语言选择 / 启动 / 过场 / 结局）
+ *              与系统弹窗（菜单 / 设置 / 提示 / 结局鉴赏 / 关于 / 隐私）
+ * ========================================================================== */
+
+/* --------------------------------------------------------------------------
+ * 1. 通用全屏容器
+ * -------------------------------------------------------------------------- */
+.screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.screen-scroll {
+  align-items: stretch;
+  justify-content: flex-start;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Win95 窗口（标题/语言/启动/设置弹窗共用基底） */
+.win-window {
+  width: min(560px, 100%);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--win-face);
+  border: 2px outset var(--win-light);
+  box-shadow: var(--shadow-win);
+}
+
+.win-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 3px 4px 3px 8px;
+  background: linear-gradient(90deg, var(--win-navy), var(--win-navy-2));
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.win-titlebar .wt-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.win-titlebar .wt-btns {
+  display: flex;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.win-titlebar .wt-btns span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 16px;
+  background: var(--win-face);
+  border: 2px outset var(--win-light);
+  color: #000;
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.win-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 14px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --------------------------------------------------------------------------
+ * 2. 标题界面
+ * -------------------------------------------------------------------------- */
+.title-screen {
+  background:
+    radial-gradient(circle at 50% 8%, rgba(255, 255, 255, 0.14), transparent 48%),
+    linear-gradient(135deg, var(--desk-1), var(--desk-3));
+}
+
+.title-window {
+  width: min(480px, 100%);
+  max-height: calc(100dvh - 32px);
+}
+
+.title-body {
+  padding: 18px 20px 16px;
+  text-align: center;
+  background: var(--paper-2);
+}
+
+.title-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 74px;
+  height: 74px;
+  margin: 0 auto 8px;
+}
+
+.title-logo img {
+  width: 74px;
+  height: 74px;
+  filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.35));
+}
+
+.title-main {
+  color: var(--win-navy);
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+}
+
+.title-zh {
+  margin-top: 2px;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.title-sub {
+  margin-top: 4px;
+  color: #555;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+}
+
+.title-desc {
+  margin: 12px auto 4px;
+  max-width: 360px;
+  padding: 10px 12px;
+  background: #fff;
+  border: 2px inset var(--win-light);
+  color: #222;
+  font-size: 0.7rem;
+  line-height: 1.85;
+  text-align: left;
+}
+
+.title-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 14px 0 6px;
+}
+
+.title-menu .win-btn {
+  width: 100%;
+  min-height: 44px;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+}
+
+.title-menu .win-btn .sub-label {
+  color: #666;
+  font-size: 0.62rem;
+  letter-spacing: 0;
+}
+
+.title-menu .win-btn.primary .sub-label {
+  color: #c8d6ec;
+}
+
+.title-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  color: #555;
+  font-size: 0.6rem;
+  line-height: 1.7;
+}
+
+.badge-16 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 20px;
+  padding: 0 5px;
+  background: #b23a48;
+  border: 1px solid #6a1622;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.badge-offline {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 20px;
+  padding: 0 6px;
+  background: #e6e0cc;
+  border: 1px solid #999;
+  color: #444;
+  font-size: 0.6rem;
+}
+
+.title-foot {
+  margin-top: 8px;
+  color: #777;
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+}
+
+/* --------------------------------------------------------------------------
+ * 3. 首次启动语言选择
+ * -------------------------------------------------------------------------- */
+.lang-window {
+  width: min(440px, 100%);
+}
+
+.lang-body {
+  padding: 16px;
+  background: var(--win-face);
+}
+
+.lang-lead {
+  margin-bottom: 10px;
+  color: #000;
+  font-size: 0.76rem;
+  line-height: 1.7;
+}
+
+.lang-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 8px 10px;
+  background: #fff;
+  border: 2px inset var(--win-light);
+  color: #000;
+  font-size: 0.82rem;
+  text-align: left;
+}
+
+.lang-option:active {
+  border-style: outset;
+}
+
+.lang-option.active {
+  background: var(--win-navy);
+  color: #fff;
+}
+
+.lang-option .lo-radio {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border: 2px inset var(--win-light);
+  border-radius: 50%;
+  color: var(--win-navy);
+  font-size: 0.6rem;
+  line-height: 1;
+}
+
+.lang-option .lo-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lang-option .lo-title {
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.lang-option .lo-sub {
+  font-size: 0.64rem;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+.lang-option.active .lo-sub {
+  color: #cfd9ee;
+}
+
+.lang-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.lang-note {
+  margin-top: 10px;
+  color: #444;
+  font-size: 0.64rem;
+  line-height: 1.7;
+}
+
+/* --------------------------------------------------------------------------
+ * 4. 启动画面（拨号上网风格）
+ * -------------------------------------------------------------------------- */
+.intro-screen {
+  justify-content: flex-start;
+  padding-top: 3vh;
+  overflow-y: auto;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.12), transparent 45%),
+    linear-gradient(135deg, var(--desk-1), var(--desk-3));
+}
+
+.intro-window {
+  width: min(620px, 100%);
+}
+
+.intro-body {
+  padding: 16px;
+}
+
+.intro-titles {
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.intro-titles h1 {
+  color: var(--win-navy);
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+}
+
+.intro-titles p {
+  margin-top: 3px;
+  color: #333;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+}
+
+.intro-text {
+  max-height: min(46dvh, 360px);
+  overflow-y: auto;
+  padding: 14px;
+  background: #fff;
+  border: 2px inset var(--win-light);
+  color: #111;
+  font-size: 0.78rem;
+  line-height: 2;
+}
+
+.intro-text .zh-box {
+  margin-top: 12px;
+}
+
+.intro-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.intro-progress {
+  margin-right: auto;
+  color: #333;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+}
+
+/* --------------------------------------------------------------------------
+ * 5. 过场独白
+ * -------------------------------------------------------------------------- */
+.cutscene-screen {
+  background: #000;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.cutscene-inner {
+  width: min(700px, 100%);
+  margin: auto;
+}
+
+.cutscene-text {
+  color: #d8cbb0;
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 2.4vw, 1.3rem);
+  line-height: 2.1;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.cutscene-zh {
+  margin-top: 16px;
+  padding: 10px 12px;
+  border: 1px dashed #5a4a3a;
+  color: #a89878;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  line-height: 1.9;
+  white-space: pre-wrap;
+}
+
+.cutscene-sub {
+  margin-top: 22px;
+  color: #666;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+}
+
+.cutscene-actions {
+  margin-top: 22px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+ * 6. 结局画面
+ * -------------------------------------------------------------------------- */
+.ending-screen {
+  justify-content: flex-start;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(90, 20, 20, 0.35), transparent 55%),
+    #0a0808;
+  overflow-y: auto;
+  padding: 24px 16px 40px;
+}
+
+.ending-inner {
+  width: min(760px, 100%);
+  margin: 0 auto;
+  padding: 24px;
+  background: #0b0b0b;
+  border: 1px solid #5a2a2a;
+  color: #d0c0c0;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+}
+
+.ending-inner .ending-kicker {
+  margin-bottom: 8px;
+  color: #8a6a6a;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+}
+
+.ending-inner h1 {
+  margin-bottom: 10px;
+  color: #e0b0b0;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+}
+
+.ending-inner .ending-zh-title {
+  margin-bottom: 16px;
+  color: #a98888;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+}
+
+.ending-text p {
+  margin-bottom: 10px;
+  color: #d0c0c0;
+  font-size: 0.82rem;
+  line-height: 1.95;
+}
+
+.ending-text .zh-box {
+  background: #120c0c;
+  border-color: #4a2a2a;
+  color: #c9a9a9;
+}
+
+.ending-text .zh-box b {
+  color: #a97a7a;
+}
+
+.ending-finally {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #3a1a1a;
+  color: var(--arch-gold);
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  line-height: 1.9;
+}
+
+.ending-unlock {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 4px 8px;
+  background: #1a0d0d;
+  border: 1px solid #6a2a2a;
+  color: #d9b0b0;
+  font-size: 0.68rem;
+}
+
+.ending-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+/* --------------------------------------------------------------------------
+ * 7. 弹窗（菜单 / 设置 / 提示 / 结局鉴赏 / 关于 / 隐私 / 清档确认）
+ * -------------------------------------------------------------------------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(14px + var(--safe-top)) calc(14px + var(--safe-right)) calc(14px + var(--safe-bottom)) calc(14px + var(--safe-left));
+  background: rgba(0, 0, 0, 0.5);
+  animation: fade-in 0.15s ease-out;
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(540px, 100%);
+  max-height: calc(100dvh - 28px - var(--safe-top) - var(--safe-bottom));
+  background: var(--win-face);
+  border: 2px outset var(--win-light);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+.dialog.wide {
+  width: min(680px, 100%);
+}
+
+.dialog-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 3px 4px 3px 8px;
+  background: linear-gradient(90deg, var(--win-navy), var(--win-navy-2));
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.dialog-head .dh-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.dialog-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-width: 34px;
+  min-height: 28px;
+  padding: 0 6px;
+  background: var(--win-face);
+  border: 2px outset var(--win-light);
+  color: #000;
+  font-size: 0.76rem;
+  line-height: 1;
+}
+
+.dialog-close:active {
+  border-style: inset;
+}
+
+.dialog-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 14px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  background: var(--win-face);
+  color: #000;
+  font-size: 0.8rem;
+  line-height: 1.75;
+}
+
+.dialog-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 0 14px 14px;
+  background: var(--win-face);
+}
+
+/* 弹窗内的小节 */
+.dlg-section {
+  margin-bottom: 12px;
+}
+
+.dlg-section-title {
+  margin-bottom: 6px;
+  padding: 2px 6px;
+  background: var(--win-navy);
+  color: #fff;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+}
+
+.dlg-hint {
+  margin-top: 8px;
+  color: #555;
+  font-size: 0.68rem;
+  line-height: 1.7;
+}
+
+/* 系统菜单列表 */
+.menu-list {
+  display: grid;
+  gap: 6px;
+}
+
+.menu-list .win-btn {
+  justify-content: flex-start;
+  min-height: var(--tap);
+  font-size: 0.82rem;
+  text-align: left;
+}
+
+.menu-list .win-btn .mi-glyph {
+  flex: 0 0 22px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.menu-list .win-btn .mi-text {
+  flex: 1 1 auto;
+}
+
+.menu-list .win-btn .mi-sub {
+  flex: 0 0 auto;
+  color: #555;
+  font-size: 0.62rem;
+}
+
+.menu-save {
+  margin-top: 10px;
+  padding: 8px;
+  background: #fff;
+  border: 2px inset var(--win-light);
+  color: #333;
+  font-size: 0.68rem;
+  line-height: 1.8;
+}
+
+.menu-save b {
+  color: var(--win-navy);
+}
+
+/* 设置 */
+.set-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 9px 2px;
+  border-bottom: 1px dotted #999;
+}
+
+.set-row:last-child {
+  border-bottom: none;
+}
+
+.set-label {
+  flex: 1 1 120px;
+  min-width: 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.set-label small {
+  display: block;
+  color: #666;
+  font-size: 0.62rem;
+  line-height: 1.5;
+}
+
+.seg {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.seg .win-btn {
+  min-width: 46px;
+  min-height: 38px;
+  padding: 3px 8px;
+  font-size: 0.72rem;
+}
+
+.seg .win-btn.active {
+  background: var(--win-navy);
+  color: #fff;
+  border-color: #6a8ac0 var(--win-dark) var(--win-dark) #6a8ac0;
+}
+
+.set-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.set-danger {
+  color: var(--danger);
+}
+
+.set-version {
+  margin-top: 10px;
+  padding: 8px;
+  background: #fff;
+  border: 2px inset var(--win-light);
+  color: #333;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  line-height: 1.8;
+}
+
+/* 提示 */
+.hint-act {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 2px 8px;
+  background: var(--win-navy);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+}
+
+.hint-goal {
+  margin-bottom: 10px;
+  padding: 9px 10px;
+  background: #ffffe1;
+  border: 1px solid #7a6a2a;
+  color: #4a3a10;
+  font-size: 0.78rem;
+  line-height: 1.8;
+}
+
+.hint-steps {
+  counter-reset: hint;
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.hint-steps li {
+  position: relative;
+  padding: 8px 10px 8px 34px;
+  background: #fff;
+  border: 1px solid #999;
+  color: #222;
+  font-size: 0.74rem;
+  line-height: 1.8;
+}
+
+.hint-steps li::before {
+  counter-increment: hint;
+  content: counter(hint);
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: var(--win-navy);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  line-height: 1;
+}
+
+.hint-spoiler {
+  margin-top: 12px;
+  padding: 8px 10px;
+  background: #f3e6e6;
+  border: 1px dashed #8a4a4a;
+  color: #5a2020;
+  font-size: 0.72rem;
+  line-height: 1.8;
+}
+
+.hint-spoiler summary {
+  min-height: 30px;
+  color: #6a1f1f;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.hint-foot {
+  margin-top: 10px;
+  color: #555;
+  font-size: 0.64rem;
+  line-height: 1.7;
+}
+
+/* 结局鉴赏 */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.gallery-card {
+  min-width: 0;
+  padding: 10px;
+  background: #fff;
+  border: 2px inset var(--win-light);
+  color: #222;
+  font-size: 0.72rem;
+  line-height: 1.7;
+}
+
+.gallery-card.locked {
+  background: #e6e6e6;
+  color: #888;
+}
+
+.gallery-card .gc-no {
+  color: #888;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+}
+
+.gallery-card .gc-title {
+  margin: 3px 0;
+  color: var(--win-navy);
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.gallery-card.locked .gc-title {
+  color: #888;
+}
+
+.gallery-card .gc-sub {
+  color: #666;
+  font-size: 0.62rem;
+}
+
+.gallery-card .gc-desc {
+  margin-top: 4px;
+  color: #444;
+  font-size: 0.64rem;
+  line-height: 1.7;
+}
+
+.gallery-card.unlocked {
+  border-color: var(--win-navy);
+}
+
+.gallery-card .gc-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 1px 6px;
+  background: var(--win-navy);
+  color: #fff;
+  font-size: 0.58rem;
+}
+
+.gallery-card.locked .gc-badge {
+  background: #999;
+}
+
+.gallery-summary {
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 0.74rem;
+}
+
+/* 关于 / 隐私 */
+.doc-prose {
+  color: #222;
+  font-size: 0.76rem;
+  line-height: 1.9;
+}
+
+.doc-prose h3 {
+  margin: 12px 0 4px;
+  color: var(--win-navy);
+  font-size: 0.82rem;
+}
+
+.doc-prose h3:first-child {
+  margin-top: 0;
+}
+
+.doc-prose ul {
+  margin: 4px 0 8px;
+  padding-left: 1.2em;
+  list-style: disc;
+}
+
+.doc-prose li {
+  margin-bottom: 2px;
+}
+
+.doc-prose .fill-placeholder {
+  color: #8a1f1f;
+  font-weight: 700;
+}
+
+.about-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.about-logo img {
+  width: 52px;
+  height: 52px;
+}
+
+.about-name {
+  min-width: 0;
+}
+
+.about-name b {
+  display: block;
+  color: var(--win-navy);
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.about-name span {
+  display: block;
+  color: #555;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  line-height: 1.5;
+}
+
+/* 清档二次确认 */
+.confirm-text {
+  padding: 10px;
+  background: #fff;
+  border: 2px inset var(--win-light);
+  color: #5a1010;
+  font-size: 0.78rem;
+  line-height: 1.8;
+}
+
+/* 移动端适配统一在 mobile.css 处理 */
